@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        This is a <a href="https://en.wikipedia.org/wiki/Markov_chain">markov chain</a> created from C.S. Lewis' Space Trilogy.
+    </head>
+    <body>
+        <p>
+        For context, the trilogy is a mythical fantasy regarding god (Maleldil), and various Roman Deities as powerful angels in charge of their respective planets. If you see any names, Ransom is the name of the "good guy", Weston is the "bad guy" and Merlin is the cool wizard. "Hnau" is the martians term for rational beings; one of the Hrossa (a species of large, bipedal otter-like poets) explain to Ransom that they are not a race of beasts, but they are Hnau and are thus hospitable.
+        </p>
+    <br>
+    <p style="text-align:center;"><em>Markov Chain</em></p>
+    <button onclick="saveChain()">Click to save your output!</button>
+    <p id='chain'></p>
+    <br>
+    <br>
+    <h1>Saved Outputs</h1>
+    <pre><p id="saved"></p></pre>
+    <script type='text/javascript' src='markov.js'></script>
+    </body>
+    
+    <script>
+    // Load the saved content from localStorage on page load
+    window.addEventListener('load', function() {
+      var savedContent = localStorage.getItem('savedContent');
+      if (savedContent) {
+        document.getElementById('saved').innerHTML = savedContent;
+      }
+    });
+    
+    function saveChain() {
+      var chainContent = document.getElementById("chain").textContent;
+      document.getElementById("saved").innerHTML += chainContent + "\n";
+      
+      
+      // Save the updated content to localStorage
+      localStorage.setItem('savedContent', document.getElementById("saved").innerHTML);
+    }
+  </script>
+</html>
