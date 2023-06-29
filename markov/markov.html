@@ -19,21 +19,27 @@
     </body>
     
     <script>
+    const fs = require('fs')
     // Load the saved content from localStorage on page load
     window.addEventListener('load', function() {
-      var savedContent = localStorage.getItem('savedContent');
-      if (savedContent) {
-        document.getElementById('saved').innerHTML = savedContent;
-      }
+        fs.readFile('savedOutputs.txt', 'utf8', (err,data)=>{
+            if (err) {
+                console.error('Error loading saved outputs: ', err);
+            } else {
+                const savedOutputs = data.trim().split('\n');
+                console.log('Loaded from saved outputs: ', savedOutputs);
+            }
+        });
     });
     
     function saveChain() {
-      var chainContent = document.getElementById("chain").textContent;
-      document.getElementById("saved").innerHTML += chainContent + "\n";
-      
-      
-      // Save the updated content to localStorage
-      localStorage.setItem('savedContent', document.getElementById("saved").innerHTML);
+        content = document.getElementById(chain).innerHTML;
+        fs.writeFile('savedOutputs.txt',content.join('\n'),(err)=> {
+            if(err){
+                console.error('Error saving content to file: ',err);
+            } else {
+                console.log('Content saved to file succesfully.');
+        });
     }
   </script>
 </html>
