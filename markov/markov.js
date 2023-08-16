@@ -15,7 +15,7 @@ function loadChain(callback) {
 // Call loadNgram to load the ngram data from the JSON file
 loadChain(function(ngram) {
   // Use the ngram data to generate the markov chain
-    // word_pair is a single string of the form word1_word2
+  // word_pair is a single string of the form word1_word2
   var word_pair = Object.keys(ngram)[Math.floor(Math.random() * Object.keys(ngram).length)];
   var wordArr = word_pair.split("_")
     var chain = wordArr[0]+" "+wordArr[1]+" "
