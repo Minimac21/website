@@ -10,7 +10,7 @@ function loadChain(callback) {
     }
   };
   xhr.send(null);
-}
+};
 
 // Call loadChain to load the ngram data from the JSON file
 function generateChain(ngram) {
@@ -35,4 +35,4 @@ function generateChain(ngram) {
   output.innerHTML += chain;
 };
 
-loadChain(generateChain());
+loadChain(generateChain);
