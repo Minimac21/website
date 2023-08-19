@@ -12,32 +12,14 @@
         For context, the trilogy is a mythical fantasy regarding god (Maleldil), and various Roman Deities as powerful angels in charge of their respective planets. If you see any names, Ransom is the name of the "good guy", Weston is the "bad guy" and Merlin is the cool wizard.
         </p>
     <br>
-    <p style="text-align:center;"><em>Markov Chain</em></p>
-    <button onclick="saveChain()">Click to save your output!</button>
+    <h1><em>Markov Chain</em></h1>
     <p id='chain'></p>
+    <button id="saveButton">save your output!</button>
     <br>
     <br>
     <h1>Saved Outputs</h1>
     <pre><p id="saved"></p></pre>
-    <script type='text/javascript' src='markov.js'></script>
+    <script type='text/javascript' src='load_chain.js'></script>
+    <script type = 'text/javascript' src = 'saved_chains.js'> </script>
     </body>
-
-    <script>
-    // Load the saved content from localStorage on page load
-    window.addEventListener('load', function() {
-      var savedContent = localStorage.getItem('savedContent');
-      if (savedContent) {
-        document.getElementById('saved').innerHTML = savedContent;
-      }
-    });
-    
-    function saveChain() {
-      var chainContent = document.getElementById("chain").textContent;
-      document.getElementById("saved").innerHTML += chainContent + "\n";
-      
-      
-      // Save the updated content to localStorage
-      localStorage.setItem('savedContent', document.getElementById("saved").innerHTML);
-    }
-  </script>
 </html>
