@@ -12,6 +12,19 @@ function loadChain(callback) {
   xhr.send(null);
 };
 
+function getCorpus() {
+  var xhr = new XMLHttpRequest();
+  xhr.open('GET', 'corpuses/cslewis.txt');
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4 && xhr.status == "200") {
+      return xhr.responsText;
+    } else {
+      return null
+    }
+  }
+xhr.send(null);
+}
+
 // Call loadChain to load the ngram data from the JSON file
 function generateChain(ngram) {
   // Use the ngram data to generate the markov chain
@@ -34,5 +47,35 @@ function generateChain(ngram) {
   
   output.innerHTML += chain;
 };
+
+function getSubStrings(){
+  let i = 0;
+  let j = 2;
+
+  const wordEnds = [0];
+  const chain = output.innerHTML;
+  const corpus = getCorpus;
+  const substrings = [];
+  
+  //Keeping track of words with idx of each space (includes final character)
+  for(const i = 0;i<chain.length;i++){
+    if(chain[i]==' '){
+      wordEnds.push(i);
+    }
+  }
+
+  while (j < wordEnds.length && i + 1 < j) {
+    const currSubstr = chain.substr(wordEnds[i], wordEnds[j]);
+    if (corpus.includes(currSubstr)) {
+      j++;
+    } else {
+      if (j - i > 4) {
+        substrings.push(currSubstr);
+      }
+      i = j;
+      j += 2;
+    }
+  }
+}
 
 loadChain(generateChain);
