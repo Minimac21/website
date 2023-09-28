@@ -12,12 +12,12 @@ function loadChain(callback) {
   xhr.send(null);
 };
 
-function getCorpus(callback) {
+function highlightLongestSubstrInCorpus() {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'corpuses/cslewis.txt');
   xhr.onreadystatechange = function () {
     if (xhr.readyState == 4 && xhr.status == 200) {
-      callback(xhr.responseText);
+      highlightSubstr(getLongestSubstr(xhr.responseText));
     }
   };
 xhr.send(null);
@@ -65,7 +65,7 @@ function getSubStrings(corpus){
       j++;
     } else {
       if (j - i > 4) {
-        substrings.push(currSubstr);
+        substrings.push([wordEnds[i],wordEnds[j]]);
       }
       i = j;
       j += 2;
@@ -74,4 +74,19 @@ function getSubStrings(corpus){
   return substrings;
 }
 
+function getLongestSubstr(corpus) {
+  const susbtrings = getSubstrings(corpus);
+  var result = [0,0];
+  for(const substr of substrings){
+    if(substr[1]-substr[0]>result[1]-result[0]){
+      result = substr;
+    }
+  }
+  return result;
+}
+
+function highlightSubstr(substrIdx) {
+  var chain = output.innerHTML;
+  return chain.slice(0,substrIdx[0]).concat("<span style='color: red;'>", chain.slice(substrIdx[0],substrIdx[1]), "</span>", chain.slice(substrIdx[1]))
+}
 loadChain(generateChain);
