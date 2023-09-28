@@ -1,4 +1,5 @@
-var output = document.getElementById("chain");
+const output = document.getElementById("chain");
+const substrButton = document.getElementById("analyze");
 
 function loadChain(callback) {
   var xhr = new XMLHttpRequest();
@@ -46,10 +47,10 @@ function generateChain(ngram) {
   output.innerHTML += chain;
 };
 
-function getSubStrings(corpus){
+function getSubstrings(corpus){
   const wordEnds = [0];
-  const chain = output.innerHTML;
-  const substrings = [];
+  const chain = output.innerText;
+  var substrings = [];
   
   //Keeping track of words with idx of each space (includes final character)
   for(let i = 0;i<chain.length;i++){
@@ -57,25 +58,30 @@ function getSubStrings(corpus){
       wordEnds.push(i);
     }
   }
+  console.log(wordEnds);
   let i=0;
   let j=2;
   while (j < wordEnds.length && i + 1 < j) {
     const currSubstr = chain.substr(wordEnds[i], wordEnds[j]);
+    console.log(currSubstr)
     if (corpus.includes(currSubstr)) {
       j++;
     } else {
       if (j - i > 4) {
-        substrings.push([wordEnds[i],wordEnds[j]]);
+        var idx = [wordEnds[i],wordEnds[j]];
+        substrings.push(currSubstr);
+        console.log(currSubstr);
       }
       i = j;
       j += 2;
     }
   }
+  console.log(substrings)
   return substrings;
 }
 
 function getLongestSubstr(corpus) {
-  const susbtrings = getSubstrings(corpus);
+  const substrings = getSubstrings(corpus);
   var result = [0,0];
   for(const substr of substrings){
     if(substr[1]-substr[0]>result[1]-result[0]){
@@ -87,6 +93,10 @@ function getLongestSubstr(corpus) {
 
 function highlightSubstr(substrIdx) {
   var chain = output.innerHTML;
-  return chain.slice(0,substrIdx[0]).concat("<span style='color: red;'>", chain.slice(substrIdx[0],substrIdx[1]), "</span>", chain.slice(substrIdx[1]))
+  var result = chain.slice(0,substrIdx[0]).concat("<span style='color: red;'>", chain.slice(substrIdx[0],substrIdx[1]), "</span>", chain.slice(substrIdx[1]));
+  output.innerHTML = result;
+  return;
 }
+
+substrButton.addEventListener("onClick", highlightLongestSubstrInCorpus);
 loadChain(generateChain);
