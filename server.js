@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const app = express();
-const port = 443; // Choose the port you want to use
+const port = 3000; //HTTPS port
 
 app.use(bodyParser.json());
 

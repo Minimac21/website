@@ -5,23 +5,21 @@ function loadChain(callback) {
   xhr.overrideMimeType("application/json");
   xhr.open('GET', 'ngram.json', true);
   xhr.onreadystatechange = function () {
-    if (xhr.readyState == 4 && xhr.status == "200") {
+    if (xhr.readyState == 4 && xhr.status == 200) {
       callback(JSON.parse(xhr.responseText));
     }
   };
   xhr.send(null);
 };
 
-function getCorpus() {
+function getCorpus(callback) {
   var xhr = new XMLHttpRequest();
   xhr.open('GET', 'corpuses/cslewis.txt');
   xhr.onreadystatechange = function () {
-    if (xhr.readyState == 4 && xhr.status == "200") {
-      return xhr.responsText;
-    } else {
-      return null
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      callback(xhr.responseText);
     }
-  }
+  };
 xhr.send(null);
 }
 
@@ -48,22 +46,19 @@ function generateChain(ngram) {
   output.innerHTML += chain;
 };
 
-function getSubStrings(){
-  let i = 0;
-  let j = 2;
-
+function getSubStrings(corpus){
   const wordEnds = [0];
   const chain = output.innerHTML;
-  const corpus = getCorpus;
   const substrings = [];
   
   //Keeping track of words with idx of each space (includes final character)
-  for(const i = 0;i<chain.length;i++){
+  for(let i = 0;i<chain.length;i++){
     if(chain[i]==' '){
       wordEnds.push(i);
     }
   }
-
+  let i=0;
+  let j=2;
   while (j < wordEnds.length && i + 1 < j) {
     const currSubstr = chain.substr(wordEnds[i], wordEnds[j]);
     if (corpus.includes(currSubstr)) {
@@ -76,6 +71,7 @@ function getSubStrings(){
       j += 2;
     }
   }
+  return substrings;
 }
 
 loadChain(generateChain);
