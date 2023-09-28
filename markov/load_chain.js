@@ -15,7 +15,7 @@ function loadChain(callback) {
 
 function highlightLongestSubstrInCorpus() {
   var xhr = new XMLHttpRequest();
-  xhr.open('GET', 'corpuses/cslewis.txt');
+  xhr.open('GET', 'corpuses/cslewisFormatted.txt');
   xhr.onreadystatechange = function () {
     if (xhr.readyState == 4 && xhr.status == 200) {
       highlightSubstr(getLongestSubstr(xhr.responseText));
@@ -58,25 +58,21 @@ function getSubstrings(corpus){
       wordEnds.push(i);
     }
   }
-  console.log(wordEnds);
   let i=0;
   let j=2;
   while (j < wordEnds.length && i + 1 < j) {
-    const currSubstr = chain.substr(wordEnds[i], wordEnds[j]);
-    console.log(currSubstr)
+    const currSubstr = chain.substring(wordEnds[i], wordEnds[j]);
     if (corpus.includes(currSubstr)) {
       j++;
     } else {
       if (j - i > 4) {
         var idx = [wordEnds[i],wordEnds[j]];
-        substrings.push(currSubstr);
-        console.log(currSubstr);
+        substrings.push(idx);
       }
       i = j;
       j += 2;
     }
   }
-  console.log(substrings)
   return substrings;
 }
 
@@ -98,5 +94,5 @@ function highlightSubstr(substrIdx) {
   return;
 }
 
-substrButton.addEventListener("onClick", highlightLongestSubstrInCorpus);
+substrButton.addEventListener("click", highlightLongestSubstrInCorpus);
 loadChain(generateChain);
