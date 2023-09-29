@@ -1,5 +1,7 @@
 const output = document.getElementById("chain");
 const substrButton = document.getElementById("analyze");
+const reloadButton = document.getElementById("reload");
+var ngramData;
 
 function loadChain(callback) {
   var xhr = new XMLHttpRequest();
@@ -7,6 +9,7 @@ function loadChain(callback) {
   xhr.open('GET', 'ngram.json', true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState == 4 && xhr.status == 200) {
+      ngramData = JSON.parse(xhr.responseText)
       callback(JSON.parse(xhr.responseText));
     }
   };
@@ -65,7 +68,7 @@ function getSubstrings(corpus){
     if (corpus.includes(currSubstr)) {
       j++;
     } else {
-      if (j - i > 4) {
+      if (j - i > 3) {
         var idx = [wordEnds[i],wordEnds[j]];
         substrings.push(idx);
       }
@@ -94,5 +97,6 @@ function highlightSubstr(substrIdx) {
   return;
 }
 
+reloadButton.addEventListener("click", () => {generateChain(ngramData)});
 substrButton.addEventListener("click", highlightLongestSubstrInCorpus);
 loadChain(generateChain);
