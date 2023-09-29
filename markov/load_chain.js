@@ -1,6 +1,7 @@
 const output = document.getElementById("chain");
 const substrButton = document.getElementById("analyze");
 const reloadButton = document.getElementById("reload");
+var highlighted = false;
 var ngramData;
 
 function loadChain(callback) {
@@ -29,6 +30,8 @@ xhr.send(null);
 
 // Call loadChain to load the ngram data from the JSON file
 function generateChain(ngram) {
+  //Necessary for good highlight substr behavior
+  highlighted=false;
   // Use the ngram data to generate the markov chain
   // word_pair is a single string of the form word1_word2
   var word_pair = Object.keys(ngram)[Math.floor(Math.random() * Object.keys(ngram).length)];
@@ -47,7 +50,7 @@ function generateChain(ngram) {
     word_pair = wordArr[1]+"_"+third;
   };
   
-  output.innerHTML += chain;
+  output.innerHTML = chain;
 };
 
 function getSubstrings(corpus){
@@ -91,8 +94,12 @@ function getLongestSubstr(corpus) {
 }
 
 function highlightSubstr(substrIdx) {
+  if(highlighted){
+    return;
+  }
+  highlighted = true;
   var chain = output.innerHTML;
-  var result = chain.slice(0,substrIdx[0]).concat("<span style='color: red;'>", chain.slice(substrIdx[0],substrIdx[1]), "</span>", chain.slice(substrIdx[1]));
+  var result = chain.slice(0,substrIdx[0]).concat("<span style='color: gold;'>", chain.slice(substrIdx[0],substrIdx[1]), "</span>", chain.slice(substrIdx[1]));
   output.innerHTML = result;
   return;
 }
