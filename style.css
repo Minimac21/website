@@ -18,8 +18,14 @@ h1 {
 	margin-right: auto;
 	width: 65%;
 }
-.bg {
+.earf-bg {
 background-image: url('images/gloryofEarf.jpg');
+background-position: top;
+background-repeat: no-repeat;
+background-size: cover;
+}
+.purble-bg{
+background-image: url('images/purble.jpg');
 background-position: top;
 background-repeat: no-repeat;
 background-size: cover;
