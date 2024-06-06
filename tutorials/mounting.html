@@ -17,13 +17,14 @@
         <li>all defaults, can be strategic about partitions (boot (30-50G for arch), swap (8G), home, /)</li>
         <li>w (write)</li>
       </ul>
+      <li>Make a filesystem: <code>mkfs.ext4 /dev/sda1</code></li>
       <li>Testing:<code> sudo mount /dev/sda1 /mnt</code></li>
       <li>If you're going to mount somewhere with existing data, right now you want to copy the contents to /mnt, potentially back them up somewhere else, and them delete the original data that you're going to mount over</li>
       <li><code>sudo umount /dev/sda1</code></li>
       <li><code>sudo mount /dev/sda1 &lt;wherever&gt;</code></li>
       <li>To make this happen automatically at boot, edit fstab</li>
-      <li>Get UUID with lsblk --fs</li>
+      <li>Get UUID with <code>blkid</code></li>
       <li>To make mounting happen on boot, add a line to etc/stab with the following format (spaces or tabs separating):</li>
-      <li><code>UUID="&lt;insert&gt;"    mountpoint    fstype(ext4?)    defaults   0  (1 if root, 2 if anything else)</code></li>
+      <li><code>UUID="&lt;insert&gt;"    mountpoint    fstype(ext4?)    defaults,nofail   0  (1 if /, 2 if anything else)</code></li>
       <!li></li>
   </body>
