@@ -1,1 +1,5 @@
 node_modules
+spotify_auth.py
+refresh_token.py
+spotify_access_token
+**/__pycache__
