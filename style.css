@@ -18,15 +18,21 @@ h1 {
 	margin-right: auto;
 	width: 65%;
 }
+.image-bg{
+  background-image: var(--image);
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
 .earf-bg {
-background-image: url('images/gloryofEarf.jpg');
-background-position: top;
-background-repeat: no-repeat;
-background-size: cover;
+  background-image: url('images/gloryofEarf.jpg');
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 .purble-bg{
-background-image: url('images/purble.jpg');
-background-position: top;
-background-repeat: no-repeat;
-background-size: cover;
+  background-image: url('images/purble.jpg');
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
 }

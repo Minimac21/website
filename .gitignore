@@ -2,4 +2,5 @@ node_modules
 spotify_auth.py
 refresh_token.py
 spotify_access_token
+rock/gunicorn_cmd
 **/__pycache__

@@ -2,7 +2,8 @@
 <html lang="en">
   <head>
     <title>Mounting a Drive on a Linux System</title>
-		<link rel="stylesheet" type='text/css' href="../style.css" />
+		<link rel="stylesheet" type='text/css' href="/style.css" />
+    <link rel="icon" href="/images/globe.png">
   </head>
   <body class="purble-bg" style="color:black;">
     <h1>Mounting a Drive on a Linux System</h1>
@@ -14,7 +15,7 @@
       <ul>
         <li><code>gdisk</code></li>
         <li>n (make a new partition)</li>
-        <li>all defaults, can be strategic about partitions (boot (30-50G for arch), swap (8G), home, /)</li>
+        <li>all defaults, can be strategic about partitions (boot (400M), swap (8G), / (30-50G for arch), /home for the rest)</li>
         <li>w (write)</li>
       </ul>
       <li>Make a filesystem: <code>mkfs.ext4 /dev/sda1</code></li>
