@@ -36,3 +36,12 @@ h1 {
   background-repeat: no-repeat;
   background-size: cover;
 }
+ .songs-container {
+  position: absolute;
+  left: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30%;
+  max-height: 80vh;
+  overflow-y: auto;
+ }

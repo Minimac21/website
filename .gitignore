@@ -4,3 +4,4 @@ refresh_token.py
 spotify_access_token
 rock/gunicorn_cmd
 **/__pycache__
+**/nohup.out
