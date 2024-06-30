@@ -1,9 +1,13 @@
 const output = document.getElementById("chain");
+const saved = document.getElementById("saved");
 const substrButton = document.getElementById("analyze");
 const reloadButton = document.getElementById("reload");
+const saveButton = document.getElementById("save");
+
 var highlighted = false;
 var ngramData;
 
+//loads ngram, performs callback on the ngram
 function loadChain(callback) {
   var xhr = new XMLHttpRequest();
   xhr.overrideMimeType("application/json");
@@ -11,7 +15,7 @@ function loadChain(callback) {
   xhr.onreadystatechange = function () {
     if (xhr.readyState == 4 && xhr.status == 200) {
       ngramData = JSON.parse(xhr.responseText)
-      callback(JSON.parse(xhr.responseText));
+      callback(ngramData);
     }
   };
   xhr.send(null);
@@ -25,21 +29,20 @@ function highlightLongestSubstrInCorpus() {
       highlightSubstr(getLongestSubstr(xhr.responseText));
     }
   };
-xhr.send(null);
+  xhr.send(null);
 }
 
 // Call loadChain to load the ngram data from the JSON file
 function generateChain(ngram) {
-  //Necessary for good highlight substr behavior
+  // reset highlist status
   highlighted=false;
-  // Use the ngram data to generate the markov chain
+  
   // word_pair is a single string of the form word1_word2
   var word_pair = Object.keys(ngram)[Math.floor(Math.random() * Object.keys(ngram).length)];
   var wordArr = word_pair.split("_")
     var chain = wordArr[0]+" "+wordArr[1]+" "
-  
 
-  //get chain
+  //make chain
   while(true){ 
     if(!(word_pair in ngram)){
       break;
@@ -104,6 +107,49 @@ function highlightSubstr(substrIdx) {
   return;
 }
 
+var savedChains;
+function addSavedChain(chainText){
+  listItem = document.createElement('li');
+  listItem.innerHTML = chainText
+  saved.appendChild(listItem);
+}
+
+function populateSavedChains(){
+  var xhr = new XMLHttpRequest();
+  xhr.overrideMimeType("text/plain")
+  xhr.open('GET', 'saved_outputs.txt');
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+      var savedChains=xhr.responseText.split("\n");
+      //assuming saved_outputs.txt has a trailing newline
+      for(var i=0; i<savedChains.length-1; i++){
+        chainText=savedChains[i]
+        addSavedChain(chainText);
+      }
+    }
+  };
+  xhr.send(null);
+}
+
+async function saveCurrentChain(){
+  //hits /api/savemarkovchain
+  //appends chain to "saved" element
+  var chain = output.innerText;
+  const formChain = new FormData();
+  formChain.append("chain",chain);
+  const response = await fetch('/api/savemarkovchain',
+    {
+      method: "POST",
+      body: formChain
+    })
+  if(!response.ok){
+    console.error(response)
+  }
+  addSavedChain(chain); 
+}
+
 reloadButton.addEventListener("click", () => {generateChain(ngramData)});
 substrButton.addEventListener("click", highlightLongestSubstrInCorpus);
+saveButton.addEventListener("click", saveCurrentChain);
+populateSavedChains();
 loadChain(generateChain);

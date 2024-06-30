@@ -80,32 +80,54 @@ var ILOVEYOU = [
 
 
 
+const widthPixels = window.screen.width * window.devicePixelRatio;
+const pixelPerChar = 16;
+//~~ truncates float to int
+const width = ~~(widthPixels / pixelPerChar);
 
 var s = [];
 var x = [];
 for(var i = 0; i<6; i++){
   x[i] = jeffrey[i] +" "+ epstein[i] +" "+ didnt[i] +" "+ minecraft[i];
 }
-s=ILOVEYOU
-var N = x[0].length;
+s=ILOVEYOU;
 
-var border = ""
-for(var i = 0; i < N+4; i++){
-    border += "="
+var border = "";
+for(var i = 0; i < width; i++){
+    border += "=";
 }
-border += "\n"
-var jeffFrames = []
-//Frames
-for(var f = 0; f<N; f++){
+border += "\n";
+
+const numTitleChars = width - 4;
+function makeTitleRowFrame(titleStr,idx){
+  //what if titleStr.length < numTitleChars
+  var titleRowFrame = "";
+  const titleStrLen = titleStr.length;
+  if(titleStrLen < numTitleChars){
+    titleRowFrame += titleStr.substring(idx,titleStrLen);
+    var numFullTitles = ~~((numTitleChars - (titleStrLen - idx)) / titleStrLen);
+    var remainder = (numTitleChars - (titleStrLen - idx)) % titleStrLen;
+    for(var i=0; i<numFullTitles; i++){
+      titleRowFrame += titleStr;
+    }
+    titleRowFrame+=titleStr.substring(0,remainder);
+  } else {
+    titleRowFrame = titleStr.substring(idx,width);
+    titleRowFrame += titleStr.substring(width,titleStrLen);
+  }
+  return titleRowFrame;
+}
+
+var titleFrames = []
+numFrames = (s[0].length < numTitleChars) ? s[0].length : numTitleChars
+for(var f = 0; f < numFrames; f++){
     frame = "<pre>" + border
     //Rows
     for(var r=0; r<6; r++){
-        frame += "| " + s[r].substring(f,N)
-        frame += s[r].substring(0,f)
-        frame += " |\n"
+        frame += "| " + makeTitleRowFrame(s[r],f) + " |\n"
     }
     frame += "</pre>" + border
-    jeffFrames[f] = frame
+    titleFrames[f] = frame
 }
 
 
@@ -159,5 +181,5 @@ function init(){
     var zigzag1Anim = new ASCIIAnimation(z1Frames,0,100,zigzag1);
     var danceAnim = new ASCIIAnimation(danceFrames,0,150,dance);
     var zigzag2Anim = new ASCIIAnimation(z1Frames,L_c,100,zigzag2);
-    var jeffAnim = new ASCIIAnimation(jeffFrames,0,100,header)
+    var titleAnim = new ASCIIAnimation(titleFrames,0,150,header)
 }

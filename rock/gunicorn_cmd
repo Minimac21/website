@@ -1,1 +1,0 @@
-gunicorn --bind unix:/var/www/gunicorn.sock backend_spotifysongs:app
