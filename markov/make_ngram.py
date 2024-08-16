@@ -27,7 +27,7 @@ for sentence in re.split(r"[.?!]", corpus):
         ngram[word_pair].append(wordThree)
 corpusFile.close()
 
-ngramFile = open("ngram.json","w")
+ngramFile = open("joyce-ngram.json","w")
 ngramJson = json.dumps(ngram, indent=2)
 ngramFile.write(ngramJson)
 ngramFile.close()
