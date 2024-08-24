@@ -11,7 +11,7 @@ var ngramData;
 function loadChain(callback) {
   var xhr = new XMLHttpRequest();
   xhr.overrideMimeType("application/json");
-  xhr.open('GET', 'ngram.json', true);
+  xhr.open('GET', 'proust-ngram.json', true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState == 4 && xhr.status == 200) {
       ngramData = JSON.parse(xhr.responseText)
@@ -37,6 +37,7 @@ function generateChain(ngram) {
   // reset highlist status
   highlighted=false;
   
+  console.log("new chain was generated")
   // word_pair is a single string of the form word1_word2
   var word_pair = Object.keys(ngram)[Math.floor(Math.random() * Object.keys(ngram).length)];
   var wordArr = word_pair.split("_")
@@ -119,6 +120,7 @@ function populateSavedChains(){
   xhr.overrideMimeType("text/plain")
   xhr.open('GET', 'saved_outputs.txt');
   xhr.onreadystatechange = function () {
+    console.log("saved chains were populated")
     if (xhr.readyState == 4 && xhr.status == 200) {
       var savedChains=xhr.responseText.split("\n");
       //assuming saved_outputs.txt has a trailing newline
