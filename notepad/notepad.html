@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Mac's Note</title>
+		<link rel="stylesheet" type='text/css' href="/style.css" />
+		<link rel="icon" href="/images/globe.png"/>
+		<meta charset="utf-8"/>
+	</head>
+  <body>
+    <div>
+      <div id="input" contenteditable="true" style="border: 1px solid blue; min-height: 100px; padding: 10px;"></div>
+      <button id="save" style="background-color: transparent"><img src="/images/save_button.png"></button>
+    </div>
+<script>
+const input=document.getElementById("input");
+var xhr = new XMLHttpRequest();
+xhr.overrideMimeType("text/plain")
+xhr.open('GET', 'note.txt');
+xhr.onreadystatechange = function () {
+  input.innerHTML = xhr.responseText;
+};
+xhr.send();
+ 
+document.getElementById('save').addEventListener('click', saveNote);
+async function saveNote(e){
+  var note = input.innerHTML;
+  const form = new FormData();
+  form.append("note",note);
+  const response = await fetch('/api/copynote',
+    {
+      method: "POST",
+      body: form
+    })
+  if(!response.ok){
+    console.error(response)
+  }
+}
+</script>
+  </body>
+</html>
+

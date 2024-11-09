@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Encrypting a drive</title>
+		<link rel="stylesheet" type='text/css' href="/style.css" />
+    <link rel="icon" href="/images/globe.png">
+  </head>
+  <body class="purble-bg" style="color:black;">
+    <h1>Setting up the drive</h1>
+    <ol>
+      <li><code>sudo cryptsetup luksFormat /dev/sdx1</code></li>
+      <li><code>sudo cryptsetup open /dev/sdx1 &lt;name&gt;</code></li>
+      <li><code>sudo mkfs.btrfs /dev/mapper/&lt;name&gt; </code></li>
+      <li><code>sudo mount /dev/mapper/&lt;name&gt; &lt;mntpoint&gt;</code></li>
+      <li><code>sudo umount &lt;mntpoint&gt;</code></li>
+      <li><code>sudo cryptsetup close /dev/mapper/&lt;name&gt;</code></li>
+    </ol>
+    <h2>Using the drive later</h2>
+    <ol>
+      <li><code>sudo cryptsetup open /dev/sdx1 &lt;name&gt;</code></li>
+      <li><code>sudo mount /dev/mapper/&lt;name&gt; /mnt</code></li>
+      <li><code>sudo cryptsetup open /dev/sdx1 &lt;name&gt;</code></li>
+    </ol>
+    <p>Just be sure to <code>sudo cryptsetup close /dev/sdx1 &lt;name&gt; when you're done</code></p>
+  </body>

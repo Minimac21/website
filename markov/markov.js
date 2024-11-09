@@ -11,7 +11,7 @@ var ngramData;
 function loadChain(callback) {
   var xhr = new XMLHttpRequest();
   xhr.overrideMimeType("application/json");
-  xhr.open('GET', 'proust-ngram.json', true);
+  xhr.open('GET', '3grams/lewis-ngram.json', true);
   xhr.onreadystatechange = function () {
     if (xhr.readyState == 4 && xhr.status == 200) {
       ngramData = JSON.parse(xhr.responseText)
@@ -137,12 +137,12 @@ async function saveCurrentChain(){
   //hits /api/savemarkovchain
   //appends chain to "saved" element
   var chain = output.innerText;
-  const formChain = new FormData();
-  formChain.append("chain",chain);
+  const form = new FormData();
+  form.append("chain",chain);
   const response = await fetch('/api/savemarkovchain',
     {
       method: "POST",
-      body: formChain
+      body: form
     })
   if(!response.ok){
     console.error(response)
