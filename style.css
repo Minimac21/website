@@ -16,7 +16,7 @@ h2 {
 	color: cornflowerblue;
 	text-align: center;
 }
-section {
+.home section {
   font-size: 22px;
   max-width: 30em;
   margin-left: auto;
@@ -68,4 +68,34 @@ div {
   text-align: center;
   padding: 0.5em 1.7em 0.2em 0;
   text-decoration: none;
+}
+
+progress {
+  width: 575px;          /* Make it wider */
+  height: 20px;          /* Make it taller */
+  border-radius: 10px;   /* Rounded corners */
+  border: 3px solid cornflowerblue;
+}
+progress::-webkit-progress-bar {
+  background-color: #262221;
+  border-radius: 10px;
+}
+progress::-webkit-progress-value {
+  background-color: #4CAF50;    /* Green color */
+  border-radius: 10px;
+}
+progress::-moz-progress-bar {
+  background-color: #4CAF50;
+  border-radius: 10px;
+}
+
+.projects h2 {
+  color: cornflowerblue;
+  text-align: left; 
+}
+.projects section {
+  font-size: 18px;
+  max-width: 50em;
+  margin-left: auto;
+  margin-right: auto;
 }

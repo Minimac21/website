@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Mac's Projects</title>
+		<link rel="stylesheet" type='text/css' href="/style.css" />
+		<link rel="icon" href="/images/globe.png"/>
+		<meta charset="utf-8"/>
+	</head>
+<body>
+<a href="/" class="a-no-underline">
+<h1 style='display:flex; justify-content:center; font-size:11px'><pre>
+   ▄▄▄▄███▄▄▄▄      ▄████████  ▄████████      ████████▄     ▄████████    ▄███████▄    ▄████████  ▄█     ▄████████    ▄████████     ███    
+ ▄██▀▀▀███▀▀▀██▄   ███    ███ ███    ███      ███   ▀███   ███    ███   ███    ███   ███    ███ ███    ███    ███   ███    ███ ▀█████████▄
+ ███   ███   ███   ███    ███ ███    █▀       ███    ███   ███    █▀    ███    ███   ███    ███ ███▌   ███    █▀    ███    █▀     ▀███▀▀██
+ ███   ███   ███   ███    ███ ███             ███    ███  ▄███▄▄▄       ███    ███  ▄███▄▄▄▄██▀ ███▌  ▄███▄▄▄       ███            ███   ▀
+ ███   ███   ███ ▀███████████ ███             ███    ███ ▀▀███▀▀▀     ▀█████████▀  ▀▀███▀▀▀▀▀   ███▌ ▀▀███▀▀▀     ▀███████████     ███    
+ ███   ███   ███   ███    ███ ███    █▄       ███    ███   ███    █▄    ███        ▀███████████ ███    ███    █▄           ███     ███    
+ ███   ███   ███   ███    ███ ███    ███      ███   ▄███   ███    ███   ███          ███    ███ ███    ███    ███    ▄█    ███     ███    
+  ▀█   ███   █▀    ███    █▀  ████████▀       ████████▀    ██████████  ▄████▀        ███    ███ █▀     ██████████  ▄████████▀     ▄████▀  
+                                                                                     ███    ███                                           
+</pre></h1>
+</a>
+<br>
+<br>
+<div class="projects">
+  <section>
+	<h2>Youtube Backup</h2>
+	<p>2024-now</p>
+	<hr>
+	<p>Doesn't it suck when you go to your youtube playlist and it says "3 unavailable videos are hidden". Those were probably the coolest videos in the playlist, and now you'll never find them. Let me introduce you to <a href="https://github.com/yt-dlp/yt-dlp">youtube-dl (patched)</a>. It's a massive project with a tone of functionality, but you should just know that you can run</p>
+	<div style="text-align: center">
+		<code>yt-dlp &lt;url&gt; -o &lt;name&gt;.&lt;format&gt;</code> 
+	</div>
+	<p>to get your free copy of any youtube video.</p>
+	<p>I've recently started accumulating some pretty nice playlists. So I wrote a script to download any new videos from any of my public playlists. It downloads my music playlists as mp3s also. This is the <a href="https://github.com/Minimac21/youtube-backup">source code</a>, but you'd have to modify it a bit (shouldn't be too hard) to get it working for yourself.</p>
+	<p>I have a daily cronjob (with anacron) that runs this script. So far it's only protected me from 1 video deletion, but I'm sure that won't be the case in 10 years.</p>
+	<br>
+	<h2>Route Planner</h2>
+	<p>2023-2024</p>
+	<hr>
+	<p>I was a programmer for my University's VEX robotics club. It's basically a sport, where each year there is a completely new game, with very complex rules. This school year's game was something like soccer, with the main twist being that the balls were triangular pyramids with rounded edges.</p>
+	<p>As a programmer, your biggest responsibility is the robot's autonomous functions. This means deciding on how you will manage the robot's odometry (current position / heading), and how you will make it move. Surprisingly, I found the hardest part of this to be tuning a <a href="https://en.wikipedia.org/wiki/Proportional%E2%80%93integral%E2%80%93derivative_controller">PID</a>. Our team for this year was pretty fresh, and the team is always modifying the robot, so you don't get much time to test your programming with it.</p>
+	<p>So our team went with the simplest method: no odometry, so we would manage our robot with two functions: turn, which would turn to an absolute heading, and go, which would drive a certain number of inches forwards (or backwards, with a negative number).</p>
+	<p>As you can imagine, writing out a complicated route with these methods is error prone. So I wrote a python script called route planner, which would let you click a series of points on the field for the robot to go to. It would then do the simple math of determing the rotations and movements necessary, and then write these routes to our source code, to immediately be used after recompiling.</p>
+	<div style="text-align: center">
+		<video controls width="575">
+			<source src="./route_plan.mp4" type="video/mp4"/>
+			<source src="./route_plan.webm" type="video/webm"/>
+		</video>
+	</div>
+  </section>
+</div>
+</body>
