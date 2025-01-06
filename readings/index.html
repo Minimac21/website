@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
-	<head>
-		<title>Mac's Readings</title>
-		<link rel="stylesheet" type='text/css' href="/style.css" />
-		<link rel="icon" href="/images/globe.png"/>
-		<meta charset="utf-8"/>
-	</head>
+<html>
+
+<head>
+  <title>Mac's Readings</title>
+  <link rel="stylesheet" type='text/css' href="/style.css" />
+  <link rel="icon" href="/images/globe.png" />
+  <meta charset="utf-8" />
+</head>
+
 <body>
-<a href="/" class="a-no-underline">
-<h1 style='display:flex; justify-content:center; font-size:11px'><pre>
+  <a href="/" class="a-no-underline">
+    <h1 style='display:flex; justify-content:center; font-size:11px'>
+      <pre>
    ▄▄▄▄███▄▄▄▄      ▄████████  ▄████████      ████████▄     ▄████████    ▄███████▄    ▄████████  ▄█     ▄████████    ▄████████     ███    
  ▄██▀▀▀███▀▀▀██▄   ███    ███ ███    ███      ███   ▀███   ███    ███   ███    ███   ███    ███ ███    ███    ███   ███    ███ ▀█████████▄
  ███   ███   ███   ███    ███ ███    █▀       ███    ███   ███    █▀    ███    ███   ███    ███ ███▌   ███    █▀    ███    █▀     ▀███▀▀██
@@ -18,13 +21,157 @@
  ███   ███   ███   ███    ███ ███    ███      ███   ▄███   ███    ███   ███          ███    ███ ███    ███    ███    ▄█    ███     ███    
   ▀█   ███   █▀    ███    █▀  ████████▀       ████████▀    ██████████  ▄████▀        ███    ███ █▀     ██████████  ▄████████▀     ▄████▀  
                                                                                      ███    ███                                           
-</pre></h1>
-</a>
-<br>
-<br>
-<div class="projects">
-<section>
-<p>Here I will provide my summaries / insights from the things I read.</p>
-</section>
-</div>
+</pre>
+    </h1>
+  </a>
+  <br>
+  <br>
+  <div class="book-list">
+    <div id="genre-filter" class="genre-filter">
+    </div>
+
+    <div id="books-container">
+      <div class="loading">Loading books...</div>
+    </div>
+  </div>
+  <script>
+    let books = [];
+    let selectedGenre = 'all';
+
+    function createBookCard(book) {
+      if(book.title){
+        return `
+          <div class="book-card">
+            <a href="${book.link}" class="book-title">${book.title}</a>
+            <p class="book-author">by ${book.author}</p>
+            <div>
+              ${book.genres.map(g => `<span class="genre-tag">${g}</span>`).join('')}
+            </div>
+            ${book.description ? `
+              <div class="description-container">
+                <div class="description collapsed">
+                  ${book.description}
+                </div>
+                <button class="toggle-description" onclick="toggleDescription(this)">...</button>
+              </div>
+            ` : ''}
+            ${book.quotes && book.quotes.length > 0 ? `
+              <div class="quotes-section">
+                <ul class="quotes-list">
+                  ${book.quotes.map(quote => `
+                    <li><q>${quote}</q></li>
+                  `).join('')}
+                </ul>
+              </div>
+            ` : ''}
+          </div>
+        `;
+      } else {
+        return "";
+      }
+    }
+
+    function toggleDescription(button) {
+      const description = button.previousElementSibling;
+      const isCollapsed = description.classList.contains('collapsed');
+
+      if (isCollapsed) {
+        description.classList.remove('collapsed');
+        button.textContent = 'Show less';
+      } else {
+        description.classList.add('collapsed');
+        button.textContent = '...';
+      }
+    }
+
+    function renderBooks(selectedGenre = 'all') {
+      const filteredBooks = selectedGenre === 'all'
+        ? books
+        : books.filter(book => book.genres.includes(selectedGenre));
+
+      const booksByYear = filteredBooks.reduce((acc, book) => {
+        if (!acc[book.year]) acc[book.year] = [];
+        acc[book.year].push(book);
+        return acc;
+      }, {});
+
+      const container = document.getElementById('books-container');
+      container.innerHTML = Object.entries(booksByYear)
+        .sort(([a], [b]) => b - a)
+        .map(([year, yearBooks]) => `
+          <div class="year-section">
+            <h2 class="year-header">${year}</h2>
+            ${yearBooks.map(book => createBookCard(book)).join('')}
+          </div>
+        `).join('');
+    }
+
+    function createGenreFilter(genres) {
+      const filterContainer = document.getElementById('genre-filter');
+      filterContainer.innerHTML = `
+        <span class="genre-bubble ${selectedGenre === 'all' ? 'active' : ''}" 
+              data-genre="all">
+          All
+        </span>
+        ${Array.from(genres).map(genre => `
+          <span class="genre-bubble ${selectedGenre === genre ? 'active' : ''}" 
+                data-genre="${genre}">
+            ${genre}
+          </span>
+        `).join('')}
+      `;
+
+      filterContainer.querySelectorAll('.genre-bubble').forEach(bubble => {
+        bubble.addEventListener('click', () => {
+          filterContainer.querySelectorAll('.genre-bubble').forEach(b =>
+            b.classList.remove('active')
+          );
+          bubble.classList.add('active');
+          selectedGenre = bubble.dataset.genre;
+          renderBooks(selectedGenre);
+        });
+      });
+    }
+
+    function populateGenreFilter() {
+      const genres = new Set(books.flatMap(book => book.genres));
+      createGenreFilter(genres);
+    }
+
+    function handleError(message) {
+      const container = document.getElementById('books-container');
+      container.innerHTML = `<div class="error">Error: ${message}</div>`;
+    }
+
+    // Fetch and initialize data
+    const xhr = new XMLHttpRequest();
+    xhr.open('GET', 'readings.json', true);
+
+    xhr.onload = function () {
+      if (xhr.status === 200) {
+        try {
+          books = JSON.parse(xhr.responseText);
+          populateGenreFilter();
+          renderBooks();
+        } catch (e) {
+          handleError(e);
+        }
+      } else {
+        handleError('Failed to load books');
+      }
+    };
+
+    xhr.onerror = function () {
+      handleError('Failed to load books');
+    };
+
+    xhr.send();
+
+    // Handle genre filter changes
+    document.getElementById('genre-select').addEventListener('change', (e) => {
+      renderBooks(e.target.value);
+    });
+  </script>
 </body>
+
+</html>
