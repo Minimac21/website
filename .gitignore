@@ -5,4 +5,5 @@ spotify_access_token
 rock/gunicorn_cmd
 **/__pycache__
 **/nohup.out
-Zardoz.mp4
+*.mp4
+documents/
