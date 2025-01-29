@@ -61,6 +61,12 @@ table {
   background-repeat: no-repeat;
   background-size: cover;
 }
+.purble-bg h1 {
+  color: darkblue;
+}
+.purble-bg h2 {
+  color: darkblue;
+}
 .a-no-underline {
   text-decoration: none;
   color: inherit;

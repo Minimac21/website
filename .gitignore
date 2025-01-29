@@ -7,3 +7,5 @@ rock/gunicorn_cmd
 **/nohup.out
 *.mp4
 documents/
+images/
+videos/
