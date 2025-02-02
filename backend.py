@@ -2,18 +2,24 @@ from flask import Flask, request
 import requests
 import json
 import html
+import random
 import re
+import subprocess
+from pathlib import Path
+
+kylie_favs_playlist="https://www.youtube.com/playlist?list=PLIjqh5qaKPIA-YalxpkVZzBOsfIU4VF-S"
 
 app = Flask(__name__)
 
-@app.route("/api/spotifysongs", methods=["GET"])
-def get_spotify_songs():
+@app.route("/api/spotify-songs/<num>", methods=["GET"])
+def get_spotify_songs(num):
+
     url="https://api.spotify.com/v1/me/tracks"
     with open("../spotify_access_token", 'r') as f:
         access_token=f.read().strip()
     headers={"Authorization": f"Bearer {access_token}"}
     try:
-        number=int(request.args.get("n"))
+        number=int(num)
         if number<1:
             number=1
         if number>10:
@@ -22,10 +28,21 @@ def get_spotify_songs():
         number=5
     try:
         response = requests.get(url, headers=headers, params={"limit": number})
-        return json.loads(response.content)
+        json_response = json.loads(response.content)
+        song_ids = [song["track"]["id"] for song in json_response["items"]]
+        return song_ids
     except Exception as e:
         return(str(e))
 
+@app.route("/api/kylie-songs/<num>", methods=["GET"])
+def kylie_songs(num):
+    num = int(num)
+    command_ran = subprocess.run(f"yt-dlp --flat-playlist --get-id {kylie_favs_playlist}".split(" "), stdout=subprocess.PIPE)
+    songs = command_ran.stdout.decode().split("\n")
+    n_songs = songs[-(num+1):-1]
+    n_songs.reverse()
+    return n_songs
+    
 def valid_chain(chain):
     with open("/var/www/macdepriest.com/markov/3grams/lewis-ngram.json") as f:
         ngram = json.loads(f.read())
@@ -96,4 +113,11 @@ def copy_note():
     except Exception as e:
         return (str(e), 400)
 
-     
+@app.route("/api/get-random-vid", methods = ["GET"])
+def get_random_vid():
+    vids_dir = Path("videos")
+
+    videos = [v for v in vids_dir.iterdir() if v.is_file()]
+
+    
+    return {"name": "/"+str(random.choice(videos))}
