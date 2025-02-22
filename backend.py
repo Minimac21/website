@@ -119,5 +119,4 @@ def get_random_vid():
 
     videos = [v for v in vids_dir.iterdir() if v.is_file()]
 
-    
     return {"name": "/"+str(random.choice(videos))}

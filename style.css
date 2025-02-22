@@ -305,3 +305,13 @@ progress::-moz-progress-bar {
   justify-content: space-between;
   padding: 16px;
 }
+
+footer {
+  text-align: center;
+}
+
+.small {
+  max-height: 0.8em; 
+  max-width: 1em; 
+  vertical-align: center;
+}
